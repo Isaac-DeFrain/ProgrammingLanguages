@@ -1,0 +1,37 @@
+(* HW1 solution *)
+
+(* date : int*int*int (year,month,day) and day_of_year : int *)
+
+
+(* Question 1: Function is_older decides if date1 is older than date2 *)
+fun is_older (date1 : int*int*int, date2 : int*int*int) =
+    if #1 date1 = #1 date2
+    then if #2 date1 = #2 date2
+         then if #3 date1 = #3 date2
+	      then false               (* If same year, month, and day, then NOT older. *)
+	      else #3 date1 < #3 date2 (* If same year and month, day determines if older. *)
+	 else #2 date1 < #2 date2      (* If same year, earlier month is older.  *)
+    else #1 date1 < #1 date2;          (* Earlier year is older. *)
+
+
+(* Question 2: Function number_in_month number of dates in list with given month *)
+fun number_in_month (dates : (int*int*int) list, month : int) =
+    (* match month with #2 of each entry *)
+    if null dates
+    then 0
+    else
+	let fun tl_number (xs : (int*int*int) list) =
+	    if null (tl xs)
+	    then if #2 (hd xs) = month       (* If tail is empty then we only check the head month *)
+		 then 1
+		 else 0
+	    else if #2 (hd xs) = month       (* If head month is correct, add 1 to the total *)
+	         then tl_number(tl xs) + 1
+	         else tl_number(tl xs)
+	in
+	    tl_number(dates)
+        end;
+
+(* Question 3:  *)
+	    
+	    

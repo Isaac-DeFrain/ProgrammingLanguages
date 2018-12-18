@@ -4,10 +4,10 @@
 
 ## Polymorphic Datatypes
 Lists and options are datatype bindings which are *polymorphic* type constructors because they take in a type and output a different type.
-* List `fn : 'a -> 'a list`
-* Option `fn : 'a -> 'a option`
+* List: `fn : 'a -> 'a list`
+* Option: `fn : 'a -> 'a option`
 
-Function might not be polymorphic, e.g.
+Functions might not be polymorphic, e.g.
 * `sum_int_list : int list -> int` is not polymorphic
 * `append : 'a list * 'a list -> 'a list` is polymorphic
 
@@ -20,7 +20,7 @@ E.g.
 
 ```
 datatype ('a,'b) tree = Node of 'a * ('a,'b) tree * ('a,'b) tree
-		      | Leaf of 'b
+		      | Leaf of 'b;
 ```
 
 Examples of ('a,'b) trees
@@ -40,7 +40,7 @@ ML does type inference to determine that `xs : int list` and `sum_list : int lis
 fun sum_list xs = 
     case xs of
           [] => 0
-	| x :: xs' => x + sum_list xs'
+	| x :: xs' => x + sum_list xs';
 ```
 
 ML does type inference to determine that `xs,ys : 'a list` and `append : 'a list * 'a list -> 'a list`
@@ -49,7 +49,7 @@ ML does type inference to determine that `xs,ys : 'a list` and `append : 'a list
 fun append (xs,ys) = 
     case xs of 
 	  [] => ys
-	| x :: xs' => x :: append(xs',ys)
+	| x :: xs' => x :: append(xs',ys);
 ```
 
 ML does type inference to determine that `sum_tree : (int, int) tree -> int`
@@ -58,25 +58,25 @@ ML does type inference to determine that `sum_tree : (int, int) tree -> int`
 fun sum_tree tr = 
     case tr of
 	  Leaf i => i
-	| Node(i,lft,rgt) => i + sum_tree lft + sum_tree rgt
+	| Node(i,lft,rgt) => i + sum_tree lft + sum_tree rgt;
 ```
 
-`sum_leaves : ('a, int) tree => int`
+ML does type inference to determine that `sum_leaves : ('a, int) tree -> int`
 
 ```
 fun sum_leaves tr = 
     case tr of 
 	  Leaf i => i
-	| Node(i,lft,rgt) => sum_leaves lft + sum_leaves rgt
+	| Node(i,lft,rgt) => sum_leaves lft + sum_leaves rgt;
 ```
 
-`count_leaves : ('a,'b) tree -> int`
+ML does type inference to determine that `count_leaves : ('a,'b) tree -> int`
 
 ```
 fun count_leaves tr = 
     case tr of 
 	  Leaf i => 1
-	| Node(i,lft,rgt) => count_leaves lft + count_leaves rgt
+	| Node(i,lft,rgt) => count_leaves lft + count_leaves rgt;
 ```
 
 * Even though a list can be polymorphic, one cannot mix types of elements in list.
@@ -121,13 +121,13 @@ fun full_name r =
 
 E.g. this will *not* type check
 ```
-	fun sum_triple triple = #1 triple + #2 triple + #3 triple
+	fun sum_triple triple = #1 triple + #2 triple + #3 triple;
 ```
 
 becasue the tuple, `triple` may have more than 3 entries, but this will
 
 ```
-	fun sum_triple (x,y,z) = x + y + z
+	fun sum_triple (x,y,z) = x + y + z;
 ```
 
 `fun f (x,y,z) = x + z` is a function of type `int * 'a * int -> int`
@@ -154,7 +154,7 @@ fun zip3 list_trip =
     case list_trip of
 	  ([],[],[]) => []
 	| (hd1::tl1,hd2::tl2,hd3::tl3) => (hd1,hd2,hd3)::zip3(tl1,tl2,tl3)
-	| _ => raise ListLengthMismatch
+	| _ => raise ListLengthMismatch;
 ```
 
 The anonymous pattern `_` matches any pattern!
@@ -168,7 +168,7 @@ fun unzip3 trip_list =
 	| (x,y,z)::tl => let val (l1,l2,l3) = unzip3 tl
 			     in
 				 (x::l1,y::l2,z::l3)
-			     end
+			     end;
 ```
 
 
@@ -179,7 +179,7 @@ fun nondec xs = (* fn : int list -> bool *)
 	  [] => true
 	| x::xs' => case xs' of
 		   	  [] => true
-			| y::ys' => x <= y andalso nodec xs'
+			| y::ys' => x <= y andalso nodec xs';
 ```
 
 Nested case expressions are clumsy. Nested pattern matching is better!
@@ -250,7 +250,7 @@ E.g
 datatype AExp = Con of int
 	      | Neg of AExp
 	      | Add of AExp * AExp
-	      | Mul of AExp * AExp
+	      | Mul of AExp * AExp;
 ```
 
 Evaluation function with case expressions
@@ -261,7 +261,7 @@ fun old_eval e =
 	  Con i      => i
 	| Neg e1     => ~ (old_eval e1)
 	| Add(e1,e2) => (old_eval e1) + (old_eval e2)
-	| Mul(e1,e2) => (old_eval e1) * (old_eval e2)
+	| Mul(e1,e2) => (old_eval e1) * (old_eval e2);
 ```
 
 Now with pattern matching in the function definition
@@ -270,12 +270,12 @@ Now with pattern matching in the function definition
 fun eval (Con i)      = i
   | eval (Neg e1)     = ~ (eval e1)
   | eval (Add(e1,e2)) = (eval e1) + (eval e2)
-  | eval (Mul(e1,e2)) = (eval e1) * (eval e2)
+  | eval (Mul(e1,e2)) = (eval e1) * (eval e2);
 ```
 
 ```
 fun append ([],ys)     = ys
-  | append (x::xs',ys) = x :: append(xs',ys)
+  | append (x::xs',ys) = x :: append(xs',ys);
 ```
 
 E.g. The function `f` defined by
@@ -295,7 +295,7 @@ fun f x =			fun f x =
 	.				.
 	.				.
 	.			      | f pn = en
-      | pn => en
+      | pn => en;
 ```
 
 ## Exceptions
@@ -307,7 +307,7 @@ hd is a `fn : 'a list -> 'a` defined by
 fun hd xs =
     case xs of
 	  []   => raise List.Empty
-	| x::_ => x
+	| x::_ => x;
 ```
 
 Cannot take the head of [].
@@ -318,7 +318,7 @@ exception MyUndesirableCondition
 fun mydiv (x,y) = 
     if y = 0
     then raise MyUndesirableCondition
-    else x div y
+    else x div y;
 ```
 
 `exception AnotherCondition of int * int`
@@ -330,9 +330,9 @@ fun maxlist (xs,ex) = (* int list * exn -> int *)
     case xs of
 	  []     => raise ex
 	| x::[]  => x
-	| x::xs' => Int.max(x,maxlist(xs',ex))
+	| x::xs' => Int.max(x,maxlist(xs',ex));
 
-val w = maxlist ([3,4,5],MyUndesirableCondition)
+val w = maxlist ([3,4,5],MyUndesirableCondition);
 ```
 
 Thus, `w` is bound to `5`.
@@ -343,27 +343,27 @@ Catching/handling exceptions:
 
 ```
 val z = maxlist([],MyUndesirableCondition)
-	handle MyUndesirableCondition => 42
+	handle MyUndesirableCondition => 42;
 ```
 
 Thus, `z` is bound to `42`.
 
 * Exception binding
 ```
-	exception SomeException
-	exception SomeOtherException of 'a * 'b
+	exception SomeException;
+	exception SomeOtherException of 'a * 'b;
 ```
 
 * The `raise` primitive raises/throws the given exception
 ```
-	raise SomeException
-	raise SomeOtherException(7,"hi")
+	raise SomeException;
+	raise SomeOtherException(7,"hi");
 ```
 
 * A `handle` expression handles/catches an exception (if it doesn't match, exception continues to propogate)
 ```
-	e1 handle SomeException => e2
-	e1 handle SomeOtherException(x,y) => e2
+	e1 handle SomeException => e2;
+	e1 handle SomeOtherException(x,y) => e2;
 ```
 
 * Declaring an exception just adds a constructor to type `exn`
@@ -377,8 +377,9 @@ fun f n =
     then raise List.Empty
     else if n = 1
     then raise (MyException 4)
-    else n * n
-val x = (f 1 handle List.Empty => 42) handle MyException n => f n
+    else n * n;
+
+val x = (f 1 handle List.Empty => 42) handle MyException n => f n;
 ```
 
 This code binds `x` to `16`.
@@ -433,7 +434,9 @@ val x = fact 3;
 
 ML replaces the contents of the stack, at each step, with the value of `aux`. Thus, no popping off of the stack is required.
 
-`| fact 3 | -> |aux(3,1)| -> |aux(2,3)| -> |aux(1,6)| -> |aux(0,6)|`
+```
+	| fact 3 | -> |aux(3,1)| -> |aux(2,3)| -> |aux(1,6)| -> |aux(0,6)|
+```
 
 
 ## Accumulators for Tail Recursion
@@ -444,7 +447,7 @@ E.g. not tail-recursive
 fun sum xs =
     case xs of
 	  [] => 0
-	| x::xs' => x + sum xs'
+	| x::xs' => x + sum xs';
 ```
 
 tail-recursive
@@ -457,7 +460,7 @@ fun sum xs =
 	        | x::xs' => aux(xs',x+acc)
     in
 	aux(xs,0)
-    end
+    end;
 ```
 
 Be wary of recursive calls to the append `@` operator.
@@ -466,7 +469,7 @@ Be wary of recursive calls to the append `@` operator.
 fun rev xs =
     case xs of
 	  [] => []
-	| x::xs' => (rev xs') @ [x]
+	| x::xs' => (rev xs') @ [x];
 ```
 
 If `len(xs)=k`, then this has `O(k^2)` runtime.
@@ -479,7 +482,7 @@ fun rev xs =
 	        | x::xs' => aux(xs',x::acc)
     in
 	aux(xs,[])
-    end
+    end;
 ```
 
 If `len(xs)=k`, then this has `O(k)` runtime.

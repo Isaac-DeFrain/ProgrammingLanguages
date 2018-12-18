@@ -1,0 +1,208 @@
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+-use "hw2.sml";
+[opening hw2.sml]
+val same_string = fn : string * string -> bool
+val all_except_option = fn : string * string list -> string list option
+val get_substitutions1 = fn : string list list * string -> string list
+val get_substitutions2 = fn : string list list * string -> string list
+val similar_names = fn
+  : string list list * {first:string, last:'a, middle:'b}
+    -> {first:string, last:'a, middle:'b} list
+datatype suit = Clubs | Diamonds | Hearts | Spades
+datatype rank = Ace | Jack | King | Num of int | Queen
+type card = suit * rank
+datatype color = Black | Red
+datatype move = Discard of suit * rank | Draw
+exception IllegalMove
+val card_color = fn : suit * 'a -> color
+val card_value = fn : 'a * rank -> int
+val remove_card = fn : card list * card * exn -> card list
+val all_same_color = fn : card list -> bool
+val sum_cards = fn : card list -> int
+hw2.sml:202.7-202.14 Error: unbound variable or constructor: psocre2
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "hw2.sml;
+= stdIn:1.6-1.15 Error: unclosed string
+- 
+- ;
+- use "hw2.sml"
+= '
+stdIn:5.1 Error: illegal token
+- "
+= 
+stdIn:1.2 Error: unclosed string
+- use "hw2.sml";
+[opening hw2.sml]
+val same_string = fn : string * string -> bool
+val all_except_option = fn : string * string list -> string list option
+val get_substitutions1 = fn : string list list * string -> string list
+val get_substitutions2 = fn : string list list * string -> string list
+val similar_names = fn
+  : string list list * {first:string, last:'a, middle:'b}
+    -> {first:string, last:'a, middle:'b} list
+datatype suit = Clubs | Diamonds | Hearts | Spades
+datatype rank = Ace | Jack | King | Num of int | Queen
+type card = suit * rank
+datatype color = Black | Red
+datatype move = Discard of suit * rank | Draw
+exception IllegalMove
+val card_color = fn : suit * 'a -> color
+val card_value = fn : 'a * rank -> int
+val remove_card = fn : card list * card * exn -> card list
+val all_same_color = fn : card list -> bool
+val sum_cards = fn : card list -> int
+hw2.sml:202.7-202.14 Error: unbound variable or constructor: psocre2
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "hw2.sml";
+[opening hw2.sml]
+val same_string = fn : string * string -> bool
+val all_except_option = fn : string * string list -> string list option
+val get_substitutions1 = fn : string list list * string -> string list
+val get_substitutions2 = fn : string list list * string -> string list
+val similar_names = fn
+  : string list list * {first:string, last:'a, middle:'b}
+    -> {first:string, last:'a, middle:'b} list
+datatype suit = Clubs | Diamonds | Hearts | Spades
+datatype rank = Ace | Jack | King | Num of int | Queen
+type card = suit * rank
+datatype color = Black | Red
+datatype move = Discard of suit * rank | Draw
+exception IllegalMove
+val card_color = fn : suit * 'a -> color
+val card_value = fn : 'a * rank -> int
+val remove_card = fn : card list * card * exn -> card list
+val all_same_color = fn : card list -> bool
+val sum_cards = fn : card list -> int
+val score = fn : card list * int -> int
+val it = () : unit
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "hw2.sml";
+[opening hw2.sml]
+val same_string = fn : string * string -> bool
+val all_except_option = fn : string * string list -> string list option
+val get_substitutions1 = fn : string list list * string -> string list
+val get_substitutions2 = fn : string list list * string -> string list
+val similar_names = fn
+  : string list list * {first:string, last:'a, middle:'b}
+    -> {first:string, last:'a, middle:'b} list
+datatype suit = Clubs | Diamonds | Hearts | Spades
+datatype rank = Ace | Jack | King | Num of int | Queen
+type card = suit * rank
+datatype color = Black | Red
+datatype move = Discard of suit * rank | Draw
+exception IllegalMove
+val card_color = fn : suit * 'a -> color
+val card_value = fn : 'a * rank -> int
+val remove_card = fn : card list * card * exn -> card list
+val all_same_color = fn : card list -> bool
+val sum_cards = fn : card list -> int
+val score = fn : card list * int -> int
+val officiate = fn : card list * move list * int -> int
+val it = () : unit
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "hw2.sml";
+[opening hw2.sml]
+val same_string = fn : string * string -> bool
+val all_except_option = fn : string * string list -> string list option
+val get_substitutions1 = fn : string list list * string -> string list
+val get_substitutions2 = fn : string list list * string -> string list
+val similar_names = fn
+  : string list list * {first:string, last:'a, middle:'b}
+    -> {first:string, last:'a, middle:'b} list
+datatype suit = Clubs | Diamonds | Hearts | Spades
+datatype rank = Ace | Jack | King | Num of int | Queen
+type card = suit * rank
+datatype color = Black | Red
+datatype move = Discard of suit * rank | Draw
+exception IllegalMove
+val card_color = fn : suit * 'a -> color
+val card_value = fn : 'a * rank -> int
+val remove_card = fn : card list * card * exn -> card list
+val all_same_color = fn : card list -> bool
+val sum_cards = fn : card list -> int
+val score = fn : card list * int -> int
+val officiate = fn : card list * move list * int -> int
+val test11 = true : bool
+val test12 = true : bool
+val test13 = true : bool
+val it = () : unit
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "hw2.sml";
+[opening hw2.sml]
+val same_string = fn : string * string -> bool
+val all_except_option = fn : string * string list -> string list option
+val get_substitutions1 = fn : string list list * string -> string list
+val get_substitutions2 = fn : string list list * string -> string list
+val similar_names = fn
+  : string list list * {first:string, last:'a, middle:'b}
+    -> {first:string, last:'a, middle:'b} list
+datatype suit = Clubs | Diamonds | Hearts | Spades
+datatype rank = Ace | Jack | King | Num of int | Queen
+type card = suit * rank
+datatype color = Black | Red
+datatype move = Discard of suit * rank | Draw
+exception IllegalMove
+val card_color = fn : suit * 'a -> color
+val card_value = fn : 'a * rank -> int
+val remove_card = fn : card list * card * exn -> card list
+val all_same_color = fn : card list -> bool
+val sum_cards = fn : card list -> int
+val score = fn : card list * int -> int
+val test1 = true : bool
+val officiate = fn : card list * move list * int -> int
+val it = () : unit
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "hw2.sml";
+[opening hw2.sml]
+val same_string = fn : string * string -> bool
+val all_except_option = fn : string * string list -> string list option
+val get_substitutions1 = fn : string list list * string -> string list
+val get_substitutions2 = fn : string list list * string -> string list
+val similar_names = fn
+  : string list list * {first:string, last:'a, middle:'b}
+    -> {first:string, last:'a, middle:'b} list
+datatype suit = Clubs | Diamonds | Hearts | Spades
+datatype rank = Ace | Jack | King | Num of int | Queen
+type card = suit * rank
+datatype color = Black | Red
+datatype move = Discard of suit * rank | Draw
+exception IllegalMove
+val card_color = fn : suit * 'a -> color
+val card_value = fn : 'a * rank -> int
+val remove_card = fn : card list * card * exn -> card list
+val all_same_color = fn : card list -> bool
+val sum_cards = fn : card list -> int
+val score = fn : card list * int -> int
+val officiate = fn : card list * move list * int -> int
+val it = () : unit
+- 
+
+Process sml finished

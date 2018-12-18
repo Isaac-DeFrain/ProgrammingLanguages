@@ -1,0 +1,113 @@
+(* HW1 solutions *)
+
+(* date : int*int*int (year,month,day) and day_of_year : int *)
+
+(* Question 1: Function is_older : date1 * date2 -> date1 is older than date2 *)
+fun is_older (date1 : int*int*int, date2 : int*int*int) =
+    if #1 date1 = #1 date2
+    then
+	if #2 date1 = #2 date2
+	then
+	    if #3 date1 = #3 date2
+	    then false
+	    else #3 date1 < #3 date2
+	else #2 date1 < #2 date2
+    else #1 date1 < #1 date2;
+
+
+(* Question 2: Function number_in_month : date list * month -> number of dates in list with given month *)
+fun number_in_month (dates : (int*int*int) list, month : int) =
+    (* match month with #2 of each entry *)
+    if null dates
+    then 0
+    else
+	if #2 (hd dates) = month
+	then number_in_month(tl dates,month) + 1
+	else number_in_month(tl dates,month);
+
+
+(* Question 3: Function number_in_months : date list * month list -> number of dates with month in month list *)
+fun number_in_months (dates : (int*int*int) list, months : int list) =
+    if null months
+    then 0
+    else number_in_month(dates,hd months) + number_in_months(dates,tl months);
+
+
+(* Question 4: Function dates_in_month : date list * month -> list containing dates with given month *)
+fun dates_in_month (dates : (int*int*int) list, month : int) =
+    if null dates
+    then []
+    else
+	if #2 (hd dates) = month
+	then hd dates :: dates_in_month(tl dates, month)
+	else dates_in_month(tl dates,month);
+
+
+(* Question 5: dates_in_months : date list * month list -> list of dates with any given month *)
+fun dates_in_months (dates : (int*int*int) list, months : int list) =
+    if null months
+    then []
+    else dates_in_month(dates,hd months) @ dates_in_months(dates,tl months);
+
+
+(* Question 6: Function get_nth : string list * n -> nth string in list *)
+fun get_nth (strings : string list, n : int) =
+    if n = 1
+    then hd strings
+    else get_nth(tl strings, n - 1);
+
+
+(* Question 7: Function date_to_string : date -> English formatted date string *)
+fun date_to_string (date : int*int*int) =
+    if #2 date > 0 andalso #2 date <= 12 andalso #3 date > 0 andalso #3 date <= 31
+    then
+	get_nth(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],#2 date)
+	^ " "
+	^ Int.toString(#3 date)
+	^ ", "
+	^ Int.toString(#1 date)
+    else "Invalid date";
+
+(* Question 8: Function  number_before_reaching_sum : sum * integer list -> number accesses before sublist adds to sum *)
+fun number_before_reaching_sum (sum : int, list : int list) =
+    if hd list >= sum
+    then 0
+    else 1 + number_before_reaching_sum(sum - hd list,tl list);
+
+
+(* Question 9: # day of the year -> month that day is in *)
+fun what_month (n : int) =
+    if n < 1 orelse n > 365
+    then 0
+    else 1 + number_before_reaching_sum(n,[31,28,31,30,31,30,31,31,30,31,30,31]);
+
+
+(* Question 10: month_range : day1 * day2  -> range of months from month1 containing day1 to month2 containing day2 *)
+fun month_range (day1 : int, day2 : int) =
+    if day1 > day2
+    then []
+    else
+	let val from = what_month(day1)
+	in
+	    if day1 = day2
+	    then [from]
+	    else from :: month_range(day1+1,day2)
+	end;
+
+(* val test1 = month_range(3,3) = [1];
+   val test2 = month_range(5,2) = [];
+   val test3 = month_range(1,5) = [1,1,1,1,1];
+   val test4 = month_range(29,32) = [1,1,1,2]; *)
+
+
+(* Question 11: oldest fn : date list -> oldest date option *)
+fun oldest (dates : (int*int*int) list) =
+    if null dates
+    then NONE
+    else
+	if null (tl dates)
+	then SOME(hd dates)
+	else
+	    if is_older(hd dates,valOf(oldest(tl dates)))
+	    then SOME(hd dates)
+	    else oldest(tl dates);
