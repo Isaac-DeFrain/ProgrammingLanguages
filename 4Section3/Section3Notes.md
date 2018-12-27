@@ -113,7 +113,40 @@ Example: First-order polymorphic function
 		| _::rest => 1 + len rest
 ```
 
-## Next Section
+## Anonymous Functions
+*Anonymous functions* give a way to write functions without the use of a `fun` binding.
+
+E.g. we could use a local helper function
+```
+	fun triple_n_times (n,x) = (* 3^n*x *)
+	    let fun triple x = 3 * x
+	    in
+		n_times(triple,n,x)
+	    end;
+```
+
+but `triple` is not actually needed in the entire function body. Thus, we could write
+```
+	fun triple_n_times (n,x) = n_times(let fun triple x = 3*x in triple end,n,x)
+```
+
+But why name a function if we only use it in one place and immediately pass it to another function? We can just use an *anonymous* function (i.e. an expression of the form `fn _ => _`):
+```
+	fun triple_n_times (n,x) = n_times((fn x => 3*x),n,x)
+```
+
+This is much better style. We don't even need to use a `fun` binding.
+
+### Using Anonymous Functions
+Most common use: passing arguments to higher-order functions (don't need a name).
+* Cannot use anonymous functions for recursion, no name for make recursive calls
+* Anonymous functions are well suited for single use
+
+
+## Map and Filter
+
+
+
 
 
 
