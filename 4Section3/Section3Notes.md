@@ -6,7 +6,7 @@
 *First-class functions* can be used wherever we use values.
 
 * Functions are values too
-* Arguments, reults, parts of tuples, bound to variables, carried by datatype constructors or exceptions, ...
+* Arguments, results, parts of tuples, bound to variables, carried by datatype constructors or exceptions, ...
 
 E.g. the first-class use of `double` and `incr` in `a_tuple`
 ```
@@ -80,7 +80,7 @@ Then we have `incr_n_times_lame(n,x) = n_times(increment,n,x)`, `double_n_times_
 
 
 ## Polymorphic Types and Functions as Arguments
-* Higher-order functions are often so "generic" and "reusable" that they have polymorphic types, i.e. tyoes with type variables
+* Higher-order functions are often so "generic" and "reusable" that they have polymorphic types, i.e. types with type variables
 * Higher-order functions do not have to be polymorphic (example below)
 * First-order functions can be polymorphic (we have studied some already, but an example is still given below)
 
@@ -143,7 +143,144 @@ Most common use: passing arguments to higher-order functions (don't need a name)
 * Anonymous functions are well suited for single use
 
 
+## Unnecessary Function Wrapping
+Just because we can use anonymous functions, doesn't mean they are always appropriate. E.g. there is no need to call an anonymous function `fn x => tl x` because we already have a perfectly good function that computes the same value, namely `tl`.
+
+Don't unnecessarily overuse anonymous functions.
+
+
 ## Map and Filter
+
+### Map
+`map` is a higher-order function which takes in a function and a list and returns the list with the function applied to each element. We can define `map` by
+```
+	fun map (f,xs) = (* ('a -> 'b) * 'a list -> 'b list *)
+	    case xs of
+		  [] => []
+		| x::rest => (f x)::(map(f,rest));
+```
+
+The type of `map` is very interesting; given a function `f : 'a -> 'b`, it takes in an `'a list` and returns a `'b list`.
+
+Examples of use:
+```
+	val x1 = map((fn x => x+1),[0,1,2,3]);
+```
+
+instantiates both `'a` and `'b` as `int` and returns `[1,2,3,4]`.
+```
+	val x2 = map(hd,[[1,2],[3,4,5],[6,7,8,9]]);
+```
+
+instantiates `'a` as `int list` and `'b` as `int` and returns `[1,3,6]`.
+
+There is a similar library function `List.map`, but it is defined using *currying* (covered later).
+
+### Filter
+`filter` is a higher-order function which takes in a boolean function and a list and returns the list of elements (in order) which return true for the boolean function. We can define `filter` by
+```
+	fun filter (f,xs) = (* ('a -> bool) * 'a list -> 'a list *)
+	    case xs of
+		  [] => []
+		| x::rest => if (f x)
+			     then x::(filter(f,rest))
+			     else filter(f,rest);
+```
+
+Given a boolean function `f : 'a -> bool`, `filter` filters a list according to this condition.
+
+Examples of use:
+```
+	fun is_even v = (v mod 2 = 0);
+
+	fun all_even xs = filter(is_even,xs);
+```
+
+Since `is_even = fn : int -> bool`, we have `xs : int list`, and `all_even` takes in an `int` list and returns the list (in order) of even elements. E.g. `all_even [1,2,4,5,7,8] = [2,4,8]`
+```
+	fun all_even_snd xs = filter((fn (_,v) => is_even v),xs);
+```
+
+`all_even_snd = fn : ('a * int) list -> ('a * int) list` takes in a list of tuples and returns the list of tuples (in order) whose second coordinate is even. E.g. `all_even_snd [("a",2),("b",1),("c",3),("d",6)] = [("a",2),("d",6)]`
+
+There is a similar library function `List.filter` (also uses currying).
+
+
+## Generalizing Prior Topics
+Our examples of first-class functions so far have all:
+* Taken one function as an argument to another function
+* Processed an int or list
+
+But first-class functions are useful anywhere for any kind of data
+* Can pass several functions as arguments
+* Can put functions in data structures (tuples, lists, etc.)
+* Can return functions as results
+* Can write higher-order functions that traverse user-defined data structures
+
+First-class functions are useful whenever we want to abstract over "what to compute with".
+
+### Functions Returning Functions
+The following function takes in `f = fn : int -> bool` and returns one of two `int -> int` functions
+```
+	fun double-or-triple f =
+	    if f 7
+	    then fn x => 2*x
+	    else fn x => 3*x;
+```
+
+`double_or_triple = fn : (int -> bool) -> int -> int` the REPL doesn't print any unnecessary parentheses. In general,
+```
+	t1 -> t2 -> ... -> tN-1 -> tN  means  t1 -> ( t2 -> ( ... -> (tN-1 -> tN)))
+```
+
+i.e. the `->` operator is right-associative.
+
+E.g. we can extract functions and values
+```
+	val double = double_or_triple(fn x => x-3 = 4);
+
+	val nine = double_or_triple(fn x => x = 42) 3;
+```
+
+Indeed, `double = fn : int -> int` and `nine = 9 : int`; specifically, `double = (fn x => 2*x)`.
+
+### Other Data Structures
+We can define higher-order functions over our own datatype bindings.
+
+E.g. let
+```
+	datatype exp = Const of int
+		     | Neg   of exp
+		     | Add   of exp * exp
+		     | Mult  of exp * exp
+```
+
+We will write a higher-order function to decide if in a given `exp`, every `Const` is even, or less than `10`, or etc.
+```
+	fun true_of_all_const (f,e) =
+	    case e of
+		  Const i     => f i
+		| Neg e1      => true_of_all_const(e1)
+		| Add(e1,e2)  => true_of_all_const(e1)
+				 andalso true_of_all_const(e2)
+		| Mult(e1,e2) => true_of_all_const(e1)
+				 andalso true_of_all_const(e2)
+```
+
+Given some function `f : int -> bool`, we build a boolean *predicate* `true_of_all_const = fn : (int -> bool) * exp -> bool` which traverses our data sturcture and decides if a given `e : exp` satisfies the predicate.
+
+Now we can write a predicate to test if all constants in an expression are even
+```
+	fun all_const_even e = true_of_all_const((fn v => v mod 2 = 0),e);
+```
+
+or if all constants in an expression are less than `10`
+```
+	fun all_const_less_than_ten e = true_of_all_const((fn v => v < 10),e);
+```
+
+
+## Lexical Scope
 
 
 
