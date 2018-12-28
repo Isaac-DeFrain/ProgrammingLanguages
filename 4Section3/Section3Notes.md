@@ -281,7 +281,92 @@ or if all constants in an expression are less than `10`
 
 
 ## Lexical Scope
+To understand the power of first-class functions better, we must take a step back and study the important concept of lexical scope.
 
+We know that function bodies can use any bindings in scope. But now that functions can be passed around, we need to ask: in scope where? 
+
+> Where the function is defined (not where it is called)!
+
+This semantics is called *lexical scope*. We will discuss the reasons for choosing this semantics later.
+
+E.g. consider
+```
+	1 val x   = 1;		(* x |-> 1 *)
+	2 fun f y = x + y;	(* x |-> 1 so f = fn y => 1 + y *)
+	3 val x   = 2;		(* forget x |-> 1, now x |-> 2 *)
+	4 val y   = 3;		(* y |-> 3 *)
+	5 val z   = f (x + y);	(* x |-> 2, y |-> 3, f = fn (x+y) => 1+(x+y), so z |-> 1+5=6 *)
+```
+
+Then `val z = 6 : int` as opposed to `7`.
+
+This demonstrates lexical scope even without higher-order functions.
+
+### Function Closures
+Lexical scope is the reason we need *closures*, i.e. we need a way to evaluate functions in old envirnments that aren't around anymore.
+
+We can define the semantics of functions as follows:
+* A function has *two parts*
+  - The code (obviosuly)
+  - The environment that current when the function was defined
+* This "pair" is called a *function closure* and we can call the pair, but we cannot access its pasrts individually (unlike ML pairs)
+* A call evaluates the code part in the environment part (extended with the function arguments)
+
+
+## Lexical Scope and Higher-Order Functions
+* A function body is evaluated in the environment that was current when the function was defined/created, extended by the function argument.
+* Nothing about this rule changes when we take and return functions. However, "the environment" may involve nested let-expressions, not just the top-level sequence of bindings.
+* Makes first-class functions much more powerful.
+
+E.g. returning a function
+```
+				"Current env"
+	val x = 1;		(* x |-> 1 *)
+
+	fun f y =
+	    let
+		val x = y+1	(* local binding x |-> y+1 *)
+	    in
+		fn z => x+y+z	(* f = fn y => fn z => 2y+1+z *)
+	    end;		(* f = fn : int -> int -> int *)
+
+	val x = 3;		(* forget x |-> 1, now x |-> 3 *)
+
+	val g = f 4;		(* g = fn z => 9+z *)
+
+	val y = 5;		(* y |-> 5 *)
+
+	val z = g 6;		(* z |-> g 6 = 9+6 = 15 *)
+
+	val h1 = f x;		(* h1 = fn u => 7+u *)
+
+	val h2 = f y;		(* h2 = fn u => 11+u *)
+
+	val h3 = f z;		(* h3 = fn u => 31+u *)
+```
+
+E.g. passing a function
+```
+	fun f g =
+	    let
+		val x = 3	(* irrelevant *)
+	    in
+		g 2		(* f = fn g => g 2 *)
+	    end;		(* f = fn : (int -> 'a) -> 'a *)
+
+	val x = 4;		(* x |-> 4 *)
+
+	fun h y = x + y;	(* h = fn y => 4+y *)
+
+	val z = f h;		(* z |-> 4+2 = 6 *)
+
+	val a = h z;		(* a |-> 4+6 = 10 *)
+```
+
+These examples demonstrate how lexical scope works with passing and returning functions.
+
+
+## Why Lexical Scope
 
 
 
