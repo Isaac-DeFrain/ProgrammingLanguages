@@ -267,7 +267,7 @@ We will write a higher-order function to decide if in a given `exp`, every `Cons
 				 andalso true_of_all_const(e2)
 ```
 
-Given some function `f : int -> bool`, we build a boolean *predicate* `true_of_all_const = fn : (int -> bool) * exp -> bool` which traverses our data sturcture and decides if a given `e : exp` satisfies the predicate.
+Given some function `f : int -> bool`, we build a boolean *predicate* `true_of_all_const = fn : (int -> bool) * exp -> bool` which traverses our data structure and decides if a given `e : exp` satisfies the predicate.
 
 Now we can write a predicate to test if all constants in an expression are even
 ```
@@ -303,13 +303,13 @@ Then `val z = 6 : int` as opposed to `7`.
 This demonstrates lexical scope even without higher-order functions.
 
 ### Function Closures
-Lexical scope is the reason we need *closures*, i.e. we need a way to evaluate functions in old envirnments that aren't around anymore.
+Lexical scope is the reason we need *closures*, i.e. we need a way to evaluate functions in old environments that aren't around anymore.
 
 We can define the semantics of functions as follows:
 * A function has *two parts*
-  - The code (obviosuly)
+  - The code (obviously)
   - The environment that current when the function was defined
-* This "pair" is called a *function closure* and we can call the pair, but we cannot access its pasrts individually (unlike ML pairs)
+* This "pair" is called a *function closure* and we can call the pair, but we cannot access its pasts individually (unlike ML pairs)
 * A call evaluates the code part in the environment part (extended with the function arguments)
 
 
@@ -367,7 +367,131 @@ These examples demonstrate how lexical scope works with passing and returning fu
 
 
 ## Why Lexical Scope
+* Lexical scope: use environment where function is defined
+* Dynamic scope: use environment where function is called
 
+Decades ago, these were both considered reasonable, but now lexical scope is much more widely used.
+
+Three technical reasons for using lexical scope:
+1. Function meaning does not depend on variable names used
+  - we can change the body of a function to use different variables
+
+E.g. the functions `f1` and `f2` are equivalent under lexical scope
+```
+	fun f1 y =				fun f2 y =
+	    let val x = y + 1			    let val q = y + 1
+	    in					    in
+		fn z => x + y + z			fn z => q + y + z
+	    end;				    end;
+
+	val x = 17;
+
+	val a1 = (f1 7) 4;
+
+	val a2 = (f2 7) 4;
+```
+
+Under lexical scope, we have `val a1 = 19 : int` and `val a2 = 19 : int`. However, under dynamic scope, we have `val a1 = 28 : int` and `q` is an unbound variable so `a2` is undefined.
+
+  - we can remove unused variables
+
+E.g. consider
+```
+	fun f g = let val x = 3 in g 2 end;
+
+	fun h x = x + 1;
+
+	val a = f h;
+```
+
+Under lexical scope, `val a = 3 : int` and under dynamic scope, `val a = 4 : int`.
+
+2. Functions can be type-checked and reasoned about where they are defined.
+
+E.g. consider
+```
+	val x = 1;
+
+	fun f y = let val x = y + 1 in fn z => x + y + z end;
+
+	val x = "hi";
+
+	val g = f 7;
+
+	val z = g 4;
+```
+
+Under lexical scope, `val z = 19 : int` and `val g = fn z => 15 + z : int -> int`. Whereas under dynamic scope, when we call `g` we try to add a string to an unbound variable.
+
+3. Closures can easily store the data they need.
+
+E.g. consider
+```
+	fun greaterThan x = fn y => y > x; (* int -> int -> bool *)
+
+	fun noNegatives xs = filter(greaterThan ~1, xs); (* closure *)
+
+	fun allGreater (xs,n) = filter(fn x => x > n, xs);
+```
+
+* Lexical scope for variables is the right default and is common across languages.
+* Dynamic scope can be convenient for specific applications.
+  - Some languages (e.g. Racket) have special ways to do it
+* Loosely, exception handling acts like dynamic scope:
+  - `raise e` transfers control; to the current innermost handler
+  - Does not have to be syntactically inside a `handle` expression (and usually is not)
+
+
+## Closures and Recomputations
+Things we know about evaluation:
+* A function body is *not* evaluated until the function is called.
+* A function body is evaluated *every time* the function is called.
+* A variable binding evaluates its expression *when the binding is evaluated*, not every time the variable is used.
+
+With closures, this means we can avoid repeating computations that *do not depend on function arguments*.
+
+E.g. to emphasize the semantics of functions (closures), consider
+```
+	fun allShorterThan1 (xs,s) =
+	    filter(fn x => String.size x < String.size s, xs);
+	(* recomputes String.size s for every element of xs *)
+
+	fun allShorterThan2 (xs,s) =
+	    let val size = String.size s
+	    in
+		filter(fn x => String.size x < size, xs)
+	    end;
+	(* only computes String.size s once *)
+```
+
+A caller can't tell which function is used (i.e. they do the same thing) except we will get better performance with `allShorterThan2`.
+
+To demonstrate, we add some `print "!";` commands:
+```
+	fun allShorterThan1 (xs,s) =
+	    filter(fn x => String.size x < (print "!"; String.size s), xs);
+
+	fun allShorterThan2 (xs,s) =
+	    let val size = (print "!"; String.size s)
+	    in
+		filter(fn x => String.size x < size, xs)
+	    end;
+
+	val _ = print "\nwithAllShorterThan1: ";
+
+	val x1 = allShorterThan1(["1","333","22","4444"],"xxx");
+
+	val _ = print "\nwithAllShorterThan2: ";
+
+	val x2 = allShorterThan2(["1","333","22","4444"],"xxx");
+
+	val _ = print "\n";
+```
+
+Now we will get `withAllShorterThan1: !!!!` and `withAllShorterThan2: !` indicating that we have computed `String.size "xxx"` four times in evaluating `x1` and only once in evaluating `x2`.
+
+
+## Next Section
 
 
 
