@@ -491,6 +491,71 @@ To demonstrate, we add some `print "!";` commands:
 Now we will get `withAllShorterThan1: !!!!` and `withAllShorterThan2: !` indicating that we have computed `String.size "xxx"` four times in evaluating `x1` and only once in evaluating `x2`.
 
 
+## Fold and More Closures
+`fold` is another famous iterator over recursive data structures which accumulates an answer by repeatedly applying a function to the answer so far.
+* `fold(f,acc,[x1,x2,x3,x4])` computes `f(f(f(f(acc,x1),x2),x3),x4)`
+
+We define the `fold` function by the code
+```
+	fun fold (f,acc,xs) =
+	    case xs of
+		  [] => acc
+		| x::rest => fold(f,f(acc,x),rest)
+```
+
+This version "folds left". Also `val fold = fn : ('a * 'b -> 'a) * 'a * 'b list -> 'a list`.
+
+* These "iterator-like" functions are not built into the language, just a programming pattern.
+
+* This pattern separates recursive traversal from data processing
+  * Can reuse same traversal for different data processing
+  * Can reuse same data processing for different data structures
+  * In both cases, using common vocabulary concisely communicates intent
+
+E.g. several uses of `fold`
+```
+	(* function: sum list *)
+	fun f1 xs = fold((fn (x,y) => x + y), 0, xs);
+```
+
+```
+	(* predicate: all elements non-negative? *)
+	fun f2 xs = fold((fn (x,y) => x andalso y >= 0), true, xs);
+```
+
+```
+	(* function: number of elements between lo and hi, inclusive *)
+	fun f3 (lo,hi,xs) =
+	    fold((fn (x,y) => x + (if lo <= y andalso y <= hi then 1 else 0)), 0, xs);
+```
+
+```
+	(* predicate: all elements have String.size < String.size s? *)
+	fun f4 (xs,s) =
+	    let val size = String.size s
+	    in
+	    	fold((fn (x,y) => x andalso String.size y < size), true, xs)
+	    end;
+```
+
+```
+	(* predicate: all elements satisfy the predicate g? *)
+	fun f5 (g,xs) = fold((fn (x,y) => x andalso g y), true, xs);
+```
+
+```
+	fun f4again (xs,s) =
+	    let val size = String.size s
+	    in
+		f5((fn x => String.size x < size),xs)
+	    end;
+```
+
+* Functions like `map`, `filter`, and `fold` are much more powerful thanks to closures and lexical scope
+* Functions passed in can use any "private" data in its environment
+* Iterator "doesn't even know what data is there" or type
+
+
 ## Next Section
 
 
