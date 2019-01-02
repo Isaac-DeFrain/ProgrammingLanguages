@@ -556,7 +556,89 @@ E.g. several uses of `fold`
 * Iterator "doesn't even know what data is there" or type
 
 
-## Next Section
+## Closure Idiom: Combining Functions
+
+
+## Closure Idiom: Currying
+
+
+## Partial Application
+
+
+## Currying Wrapup
+
+
+## Mutable References
+
+
+## Closure Idiom: Callbacks
+
+### Callbacks
+A common idiom: Library takes functions to apply later, when an *event* occurs, e.g.
+  * When a key is pressed, mouse moves, data arrives, etc.
+  * When the program enters a specific state (e.g. turns in a game)
+
+A library may accept multiple callbacks
+  * Different callbacks may need different private data with different types
+  * Fortunately, a function's type does not include the type of bindings in its environment (yay closures!)
+
+### Mutable State
+Mutable states are appropriate here; we want the "callbacks register" to *change*/*update* when a function to register a callback is called.
+
+* Example callback library
+
+Library maintains a mutable state for "what callbacks are there" and provides a function for accepting new callbacks
+  * A "real" library would also support removing callbacks, etc.
+  * In example, callbacks have type `int -> unit`
+
+(the `unit` type has no "useful" content)
+
+The entire public library is the function
+```
+	val onKeyEvent : (int -> unit) -> unit
+```
+
+The side-effect of `onKeyEvent` is "I'll call you back later"; because callbacks are executed for side-effects, they may also need a mutable state.
+
+Once a key event occurs (i.e. a key is pressed), `onKeyEvent` will take `int -> unit` callback and give the `int` corresponding to the the pressed key.
+
+### Library Implementation
+```
+	val cbs : (int -> unit) list ref = ref [];
+
+	fun onKeyEvent f = cbs := f::(!cbs);
+
+	fun onEvent i =
+	    let fun loop fs =
+		    case fs of
+			  [] => ()
+			| f::rest => (f i; loop rest)
+	    in
+		loop(!cbs)
+	    end;
+```
+
+### Clients
+Clients can only register `int -> unit`, so if any other data is needed, it must be in closure's environment; and if a function needs to "remember" something, it needs a mutable state.
+
+E.g.
+```
+	val timesPressed = ref 0;
+
+	val _ = onKeyEvent (fn _ => timesPressed := (timesPressed + 1));
+
+	fun printIfPressed i =
+	    onKeyEvent (fn j => if i = j
+				then print ("you pressed " ^ Int.toString i)
+				else ());
+```
+
+`onKeyEvent` adds a logger counting the number of keys pressed to the library (list of callbacks). Then when `printIfPressed i` is called it will add the conditional function, which prints "you pressed `i`" as many times as it appears in the library, to the library.
+
+
+## Standard ML Documentation
+
+
 
 
 
