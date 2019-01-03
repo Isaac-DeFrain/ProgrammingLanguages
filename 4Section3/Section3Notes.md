@@ -557,6 +557,23 @@ E.g. several uses of `fold`
 
 
 ## Closure Idiom: Combining Functions
+We have seen the rule for lexical scope and function closures and seek to answer the question of what they are good for in these next few sections.
+
+A partial but wide-ranging list of applications:
+* pass functions with private data to iterators: Done
+* Combine functions (e.g. composition)
+* Currying (mutli-argument functions and partial application)
+* Callbacks (e.g. in reactive programming)
+* Implementing an ADT with a record of functions
+
+Function composition can be defined by
+```
+	fun compose (f, g) = fn x => f (g x); (* ('a -> 'b) * ('c -> 'a) -> 'c -> 'a *)
+```
+
+another way to write `compose(f,g)` is like the mathematical notation for function composition `f o g`.
+
+
 
 
 ## Closure Idiom: Currying
