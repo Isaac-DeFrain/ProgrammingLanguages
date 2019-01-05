@@ -571,9 +571,46 @@ Function composition can be defined by
 	fun compose (f, g) = fn x => f (g x); (* ('a -> 'b) * ('c -> 'a) -> 'c -> 'a *)
 ```
 
-another way to write `compose(f,g)` is like the mathematical notation for function composition `f o g`.
+another way to write `compose(f,g)` is like the mathematical notation for function composition `f o g` (a lowercase `o`).
 
+E.g. the square root of the absolute value of an integer is a composition
+```
+	fun sqrt_of_abs i = Math.sqrt (Real.fromInt (abs i))
 
+	val sqrt_of_abs = Math.sqrt o Real.fromInt o abs
+```
+
+Since function composition is read "right-to-left" there is a convenient tool for making it left-to-right typically written `|>`. However, when typing the character `|` into SML mode for Emacs, it thinks it is a different language feature so we define our own *infix* notation `!>`. We use the `infix` keyword to designate the symbols as an infix operator, then define it with a function.
+```
+	infix !>
+
+	fun x !> f = f x;
+```
+
+All `x !> f` does is apply the second argument to the first, effectively composing functions left-to-right. Now we can rewrite `sqrt_of_abs`
+```
+	fun sqrt_of_abs i = i !> abs !> Real.fromInt !> Math.sqrt
+```
+
+Sometimes this is called a *pipeline*.
+
+Now we will define some "backup" functions. The idea is that if everything goes according to plan, then the computation runs uninterrupted, but if we don't get what we want, then change the computation. E.g.
+```
+	fun backup1 (f, g) = fn x => case f x of
+					  NONE => g x
+					| SOME y => y;
+```
+
+Here, we have `val f = fn : 'a -> 'b option`, `val g = fn : 'a -> 'b`, and `val backup1 = fn : ('a -> 'b option) * ('a -> 'b) -> 'a -> 'b`.
+
+This is like function composition except we either return the output of `f` with the option stripped off or we return the output of `g`.
+
+We can do a similar thing with exceptions
+```
+	fun backup2 (f, g) = fn x => f x handle _ => g x;
+```
+
+Now we apply `f` and return its result unless it throws an exception in which case we return the output of `g`. Here, we have `val backup2 = fn : ('a -> 'b) * ('a -> 'b) -> 'a -> 'b`.
 
 
 ## Closure Idiom: Currying
