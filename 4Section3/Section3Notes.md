@@ -614,9 +614,63 @@ Now we apply `f` and return its result unless it throws an exception in which ca
 
 
 ## Closure Idiom: Currying
+Recall that every function in ML actually only takes one argument which is pattern-matched against.
+* Previously encoded `n` arguments as one `n`-tuple
+* Another way: take one argument and return a function that takes another argument and ...
+
+This technique is called *currying* after the logician Haskell Curry (after whom the programming language Haskell is also named).
+
+
+The old way to get the effect of multiple arguments:
+```
+	fun sorted3_tuple (x,y,z) = z >= y andalso y >= x;
+
+	val t1 = sorted3_tuple (7,9,11);
+```
+
+We have `val sorted3_tuple = fn : int * int * int -> bool` and `val t1 = true : bool`.
+
+The new way: currying!
+```
+	val sorted3 = fn x => fn y => fn z => z >= y andalso y >= x;
+
+	val t2 = ((sorted3 7) 9) 11;
+```
+
+Then we have `val sorted3 = fn : int -> int -> int -> bool` and `val t2 = true : bool`. Recall that `fn : int -> int -> int -> bool` is equivalent to `fn : int -> (int -> (int -> bool))`, i.e. `->` composition is *right-associative*.
+
+Calling `sorted3 7` returns a closure with:
+* code: `fn y => fn z => z >= y andalso y >= 7`
+* environment: `x |-> 7`
+
+Calling that closure with `9` returns a closure with:
+* code: `fn z => z >= 9 andalso 9 >= 7` or simply `fn z => z >= 9`
+* environment: `x |-> 7, y |-> 9`
+
+Calling that closure with `11` returns true.
+
+### Syntactic Sugar
+* In general, `e1 e2 e3 ...` means `(...(e1 e2) e3)...)`, i.e. *sequential composition* is *left-associative*
+* Different than tupling; caller and callee must use same technique, i.e. we can't pass tuples to `sorted3` or "curried" arguments to `sorted3_tuple`
+* In general, `fun f p1 p2 p3 ... = e` means `fun f p1 = fn p2 => fn p3 => ... => e`
+
+Instead of `val sorted3 = fn x => fn y => fn z => z >= y andalso y >= x` or `fun sorted3 x = fn y => fn z => z >= y andalso y >= x`, we could simply write `fun sorted3 x y z = z >= y andalso y >= x`.
+
+As another example, we write `fold` in curried form.
+```
+	fun fold f acc xs =
+	    case xs of
+		  [] => acc
+		| x::rest => fold f f(acc,xs) rest;
+
+	fun sum xs = fold (fn (x,y) => x + y) 0 xs; (* sum list *)
+```
+
+In the ML standard library, `foldl` has `f` take its arguments in the opposite order.
 
 
 ## Partial Application
+
 
 
 ## Currying Wrap up
