@@ -281,7 +281,7 @@ or if all constants in an expression are less than `10`
 
 
 ## Lexical Scope
-To understand the power of first-class functions better, we must take a step back and study the important concept of lexical scope.
+To understand the power of first-class functions better, we must take a step back and study the important concept of *lexical scope*.
 
 We know that function bodies can use any bindings in scope. But now that functions can be passed around, we need to ask: in scope where? 
 
@@ -293,12 +293,12 @@ E.g. consider
 ```
 	1 val x   = 1;		(* x |-> 1 *)
 	2 fun f y = x + y;	(* x |-> 1 so f = fn y => 1 + y *)
-	3 val x   = 2;		(* forget x |-> 1, now x |-> 2 *)
+	3 val x   = 2;		(* x |-> 2 now shadows x |-> 1 *)
 	4 val y   = 3;		(* y |-> 3 *)
 	5 val z   = f (x + y);	(* x |-> 2, y |-> 3, f = fn (x+y) => 1+(x+y), so z |-> 1+5=6 *)
 ```
 
-Then `val z = 6 : int` as opposed to `7`.
+Then `val z = 6 : int` as opposed to `7` (what we would get if we used the binding `x |-> 2` in our call of `f`).
 
 This demonstrates lexical scope even without higher-order functions.
 
@@ -308,7 +308,7 @@ Lexical scope is the reason we need *closures*, i.e. we need a way to evaluate f
 We can define the semantics of functions as follows:
 * A function has *two parts*
   - The code (obviously)
-  - The environment that current when the function was defined
+  - The environment that was current when the function was defined
 * This "pair" is called a *function closure* and we can call the pair, but we cannot access its pasts individually (unlike ML pairs)
 * A call evaluates the code part in the environment part (extended with the function arguments)
 
@@ -619,7 +619,7 @@ Now we apply `f` and return its result unless it throws an exception in which ca
 ## Partial Application
 
 
-## Currying Wrapup
+## Currying Wrap up
 
 
 ## Mutable References
@@ -691,8 +691,94 @@ E.g.
 
 
 ## Standard ML Documentation
+Two kinds of things go into a standard library:
+* Things we cannot implement on our own, e.g. opening a file, setting a timer, connecting to the network, etc.
+* Very common things, e.g. `List.map`, string concatenation, etc.
+
+[The Standard ML Basis Library](http://www.standardml.org/Basis/manpages.html) is organized into *structures* which have *signatures* using ML's module system. We'll define our own structures in the next section.
+
+To use a binding: `StructureName.FunctionName`, e.g. `List.map`, `String.isSubstring`, etc.
+
+The REPL can display the signatures for each structure (without special support for printing documentation like in many languages).
+* Type in a function's name to see it's type
+* Can also guess a function name or print the whole structure
+
+To print all the function bindings in a structure, say, in the `List` structure:
+```
+	structure x = List;  (* returns structure x : LIST *)
+
+	signature x = LIST;
+```
 
 
+## Abstract Data Types with Closures
+*Abstract data types* are some times abbreviated by ADT.
+
+Closures can implement ADTs.
+* Can put multiple functions into a record
+* The functions can share the same private data
+* Private data can be mutable or immutable (here we choose immutable)
+* Feels a lot like objects, emphasizing that OOP and functional programming have some depp similarities
+
+We will implement immutable sets of integers with the operations *insert*, *member*, and *size*. The sets will be represented by a record.
+
+The code is advanced/clever/tricky, but it has no new features
+* Combines lexical scope, datatypes, records, closures, etc.
+* Client use is straightforward
+
+We want to implement something like
+```
+	type set = {insert : int -> set, member : int -> bool, size : unit -> int};
+```
+
+However, ML does not allow for type synonyms to be recursively defined. Instead, we will use a datatype binding
+```
+	datatype set = S of {insert : int -> set, member : int -> bool, size : unit -> int};
+```
+
+So `S` is the only constructor for this datatype.
+
+The only public value is `empty_set : set` (defined after example client).
+
+### An Example Client (the easy stuff)
+```
+	fun use_sets () = (* val use_sets = fn : unit -> int *)
+	    let val S s1 = empty_set
+		val S s2 = (#insert s1) 34
+		val S s3 = (#insert s2) 34
+		val S s4 = (#insert s3) 19
+	    in
+		if (#member s4) 42
+		then 99
+		else if (#member s4) 19
+		then 17 + (#size s3) ()
+		else 0
+	    end;
+```
+
+### Implementation of Sets (the fancy stuff)
+```
+	val empty_set =
+	    let fun make_set xs = (* xs is a "private field" in result *)
+		    let           (* contains a "private method" in result *)
+		        fun contains i = List.exists (fn j => i = j) xs
+		    in
+		        S { insert = fn i => if contains i
+					     then make_set xs
+					     else make_set (i::xs),
+			    member = contains,
+			    size = fn () => length xs
+		          }
+		    end
+	    in
+		make_set []
+	    end;
+```
+
+We seed the datatype `set` with the `empty_set` which can now be used to generate other `set`s by invoking the `insert` function as the above client has done.
+
+
+## Next Section
 
 
 
