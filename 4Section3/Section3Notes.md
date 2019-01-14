@@ -676,7 +676,9 @@ In the ML standard library, `foldl` has `f` take its arguments in the opposite o
 ## Currying Wrap up
 
 
+
 ## Mutable References
+
 
 
 ## Closure Idiom: Callbacks
