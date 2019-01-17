@@ -55,7 +55,7 @@ Three similar simple first-order functions
 	    then x
 	    else 2 * double_n_times_lame(n-1,x);
 
-	fun nth_tail_lame      (n,xs) = 
+	fun nth_tail_lame      (n,xs) =
 	    if n=0
 	    then xs
 	    else tl (nth_tail_lame(n-1,xs));
@@ -283,7 +283,7 @@ or if all constants in an expression are less than `10`
 ## Lexical Scope
 To understand the power of first-class functions better, we must take a step back and study the important concept of *lexical scope*.
 
-We know that function bodies can use any bindings in scope. But now that functions can be passed around, we need to ask: in scope where? 
+We know that function bodies can use any bindings in scope. But now that functions can be passed around, we need to ask: in scope where?
 
 > Where the function is defined (not where it is called)!
 
@@ -378,7 +378,7 @@ Three technical reasons for using lexical scope:
 
 E.g. the functions `f1` and `f2` are equivalent under lexical scope
 ```
-	fun f1 y =				fun f2 y =
+	fun f1 y =					fun f2 y =
 	    let val x = y + 1			    let val q = y + 1
 	    in					    in
 		fn z => x + y + z			fn z => q + y + z
@@ -683,6 +683,8 @@ In the ML standard library, `foldl` has `f` take its arguments in the opposite o
 
 ## Closure Idiom: Callbacks
 
+
+
 ### Callbacks
 A common idiom: Library takes functions to apply later, when an *event* occurs, e.g.
   * When a key is pressed, mouse moves, data arrives, etc.
@@ -766,8 +768,8 @@ To print all the function bindings in a structure, say, in the `List` structure:
 	signature x = LIST;
 ```
 
-
-## Abstract Data Types with Closures
+## Optional
+### Abstract Data Types with Closures
 *Abstract data types* are some times abbreviated by ADT.
 
 Closures can implement ADTs.
@@ -835,30 +837,3 @@ We seed the datatype `set` with the `empty_set` which can now be used to generat
 
 
 ## Next Section
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
