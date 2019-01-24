@@ -16,7 +16,7 @@ E.g.
 
 * Option: `datatype 'a option = NONE | SOME of 'a`
 * List:   `datatype 'a mylist = Empty | Const of 'a * 'a mylist`
-* Tree: 
+* Tree:
 
 ```
 datatype ('a,'b) tree = Node of 'a * ('a,'b) tree * ('a,'b) tree
@@ -27,17 +27,17 @@ Examples of ('a,'b) trees
 
 ```
 
-		'a  		'a
+			'a  	   	'a
 	        / \	       /   \
-              'b  'b         'a    'b
-			     / \ 
-			   'b  'b
+          'b  'b        'a    'b
+		      / \
+		    'b  'b
 ```
 
 ML does type inference to determine that `xs : int list` and `sum_list : int list -> int`
 
 ```
-fun sum_list xs = 
+fun sum_list xs =
     case xs of
           [] => 0
 	| x :: xs' => x + sum_list xs';
@@ -46,8 +46,8 @@ fun sum_list xs =
 ML does type inference to determine that `xs,ys : 'a list` and `append : 'a list * 'a list -> 'a list`
 
 ```
-fun append (xs,ys) = 
-    case xs of 
+fun append (xs,ys) =
+    case xs of
 	  [] => ys
 	| x :: xs' => x :: append(xs',ys);
 ```
@@ -55,7 +55,7 @@ fun append (xs,ys) =
 ML does type inference to determine that `sum_tree : (int, int) tree -> int`
 
 ```
-fun sum_tree tr = 
+fun sum_tree tr =
     case tr of
 	  Leaf i => i
 	| Node(i,lft,rgt) => i + sum_tree lft + sum_tree rgt;
@@ -64,8 +64,8 @@ fun sum_tree tr =
 ML does type inference to determine that `sum_leaves : ('a, int) tree -> int`
 
 ```
-fun sum_leaves tr = 
-    case tr of 
+fun sum_leaves tr =
+    case tr of
 	  Leaf i => i
 	| Node(i,lft,rgt) => sum_leaves lft + sum_leaves rgt;
 ```
@@ -73,8 +73,8 @@ fun sum_leaves tr =
 ML does type inference to determine that `count_leaves : ('a,'b) tree -> int`
 
 ```
-fun count_leaves tr = 
-    case tr of 
+fun count_leaves tr =
+    case tr of
 	  Leaf i => 1
 	| Node(i,lft,rgt) => count_leaves lft + count_leaves rgt;
 ```
@@ -87,7 +87,7 @@ fun count_leaves tr =
 `val ptrn = exp`
 
 ```
-fun sum_triple triple = 
+fun sum_triple triple =
     let val (x,y,z) = triple
     in
 	x + y + z
@@ -95,7 +95,7 @@ fun sum_triple triple =
 ```
 
 ```
-fun full_name r = 
+fun full_name r =
     let val {first=x,middle=y,last=z} = r
     in
 	x ^ " " ^ y ^ " " ^ z
@@ -150,7 +150,7 @@ However, `f : 'a list * 'a list -> 'a list` is *not* more general than `g : int 
 
 ```
 exception ListLengthMismatch
-fun zip3 list_trip = 
+fun zip3 list_trip =
     case list_trip of
 	  ([],[],[]) => []
 	| (hd1::tl1,hd2::tl2,hd3::tl3) => (hd1,hd2,hd3)::zip3(tl1,tl2,tl3)
@@ -175,7 +175,7 @@ fun unzip3 trip_list =
 ## More Nested Patterns
 ```
 fun nondec xs = (* fn : int list -> bool *)
-    case xs of 
+    case xs of
 	  [] => true
 	| x::xs' => case xs' of
 		   	  [] => true
@@ -185,8 +185,8 @@ fun nondec xs = (* fn : int list -> bool *)
 Nested case expressions are clumsy. Nested pattern matching is better!
 
 ```
-fun nondec xs = 
-    case xs of 
+fun nondec xs =
+    case xs of
 	  [] => true
 	| x::[] => true
 	| x::(y::rest) => x <= y andalso nondec (y::rest);
@@ -206,7 +206,7 @@ fun nondec xs =
 ```
 fun multisign (x1,x2) = (* int * int -> sgn *)
     let fun sign x = if x=0 then Z else if x>0 then P else N
-    in 
+    in
 	case (sign x1,sign x2) of
 	  (Z,_) => Z
 	| (_,Z) => Z
@@ -257,7 +257,7 @@ Evaluation function with case expressions
 
 ```
 fun old_eval e =
-    case e of 
+    case e of
 	  Con i      => i
 	| Neg e1     => ~ (old_eval e1)
 	| Add(e1,e2) => (old_eval e1) + (old_eval e2)
@@ -315,7 +315,7 @@ Cannot take the head of [].
 ```
 exception MyUndesirableCondition
 
-fun mydiv (x,y) = 
+fun mydiv (x,y) =
     if y = 0
     then raise MyUndesirableCondition
     else x div y;
@@ -454,7 +454,7 @@ tail-recursive
 
 ```
 fun sum xs =
-    let aux(xs,acc) = 
+    let aux(xs,acc) =
 	case xs of
 		  [] => acc
 	        | x::xs' => aux(xs',x+acc)
@@ -508,6 +508,3 @@ A *tail-call* is a function call in *tail position* (i.e. no work to do afterwar
 * If `if e1 then e2 else e3` is in tail position, then `e2` and `e3` are in tail position, but `e1` is not. Similiarly for case-expressions.
 * If `let b1 ... bn in e end` is in tail position, then `e` is in tail position, but no binding expressions are.
 * Function-call *arguments* `e1 e2` are not in tail position.
-
-
-

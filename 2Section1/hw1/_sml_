@@ -1,0 +1,424 @@
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val it = () : unit
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val it = () : unit
+- val test1 = is_older ((1,2,3),(2,3,4)) = true;
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val it = () : unit
+- = stdIn:4.1-4.13 Error: syntax error: deleting  VAL ID
+stdIn:4.16-4.20 Error: syntax error: deleting  FN COLON
+- val test2 = number_in_month ([(2012,2,28),(2013,12,1)],2) = 1;
+val test2 = true : bool
+- val test3 = number_in_months ([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = 3;
+val test3 = true : bool
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val it = () : unit
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+HW1.sml:72.6 Error: syntax error: inserting  VAL
+
+uncaught exception Compile [Compile: "syntax error"]
+  raised at: ../compiler/Parse/main/smlfile.sml:15.24-15.46
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+HW1.sml:72.27-72.31 Error: type constructor list given 0 arguments, wants 1
+HW1.sml:75.8-75.54 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: (int * int * int) list * int list
+  operand:         'Z list
+  in expression:
+    dates_in_months (tl xs)
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+HW1.sml:72.27-72.31 Error: type constructor list given 0 arguments, wants 1
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+HW1.sml:75.54-75.59 Error: unbound variable or constructor: monhs
+HW1.sml:74.8-74.29 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: (int * int * int) list * int
+  operand:         int
+  in expression:
+    dates_in_month (hd xs)
+HW1.sml:75.8-75.60 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: (int * int * int) list * int
+  operand:         int
+  in expression:
+    dates_in_month (hd xs)
+HW1.sml:75.8-75.60 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: (int * int * int) list * int list
+  operand:         int list * _
+  in expression:
+    dates_in_months (tl xs,<errorvar>)
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+HW1.sml:74.8 Error: syntax error: inserting  LPAREN
+
+uncaught exception Compile [Compile: "syntax error"]
+  raised at: ../compiler/Parse/main/smlfile.sml:15.24-15.46
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+HW1.sml:74.8-74.37 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: (int * int * int) list * int list
+  operand:         int list * int
+  in expression:
+    dates_in_months (xs,hd months)
+HW1.sml:75.8-75.69 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: (int * int * int) list * int list
+  operand:         int list * int
+  in expression:
+    dates_in_months (xs,hd months)
+HW1.sml:75.8-75.69 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: (int * int * int) list * int list
+  operand:         int list * int list
+  in expression:
+    dates_in_months (xs,tl months)
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+HW1.sml:74.8-74.36 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: (int * int * int) list * int list
+  operand:         (int * int * int) list * int
+  in expression:
+    dates_in_months (dates,hd xs)
+HW1.sml:75.8-75.67 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: (int * int * int) list * int list
+  operand:         (int * int * int) list * int
+  in expression:
+    dates_in_months (dates,hd xs)
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+val it = () : unit
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+val get_nth = fn : string list * int -> int
+val it = () : unit
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+HW1.sml:84.10-84.20 Error: operator and operand don't agree [type mismatch]
+  operator domain: {n:'Y; 'Z}
+  operand:         string list
+  in expression:
+    (fn {n=n,...} => n) strings
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+HW1.sml:90.6-90.29 Error: operator and operand don't agree [tycon mismatch]
+  operator domain: 'Z list
+  operand:         string list * int -> string list
+  in expression:
+    hd list_frag
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+val get_nth = fn : string list * int -> string
+val it = () : unit
+- get_nth (["a","b","c","d"],3);
+val it = "c" : string
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+val get_nth = fn : string list * int -> string
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+HW1.sml:98.12 Error: infix operator "-" used without "op" in fun dec
+HW1.sml:101.99-101.107 Error: unbound variable or constructor: December
+HW1.sml:101.89-101.97 Error: unbound variable or constructor: November
+HW1.sml:101.80-101.87 Error: unbound variable or constructor: October
+HW1.sml:101.69-101.78 Error: unbound variable or constructor: September
+HW1.sml:101.61-101.67 Error: unbound variable or constructor: August
+HW1.sml:101.55-101.59 Error: unbound variable or constructor: July
+HW1.sml:101.49-101.53 Error: unbound variable or constructor: June
+HW1.sml:101.44-101.47 Error: unbound variable or constructor: May
+HW1.sml:101.37-101.42 Error: unbound variable or constructor: April
+HW1.sml:101.30-101.35 Error: unbound variable or constructor: March
+HW1.sml:101.20-101.28 Error: unbound variable or constructor: February
+HW1.sml:101.11-101.18 Error: unbound variable or constructor: January
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+val get_nth = fn : string list * int -> string
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+HW1.sml:98.12 Error: infix operator "-" used without "op" in fun dec
+
+uncaught exception Error
+  raised at: ../compiler/TopLevel/interact/evalloop.sml:66.19-66.27
+             ../compiler/TopLevel/interact/evalloop.sml:44.55
+             ../compiler/TopLevel/interact/evalloop.sml:292.17-292.20
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+val get_nth = fn : string list * int -> string
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+val date_to_string = fn : int * int * int -> string
+val it = () : unit
+- date_to_month((1942,4,5));
+stdIn:2.1-2.14 Error: unbound variable or constructor: date_to_month
+- date_to_string((1942,4,5));
+val it = "April 5, 1942" : string
+- date_to_string((1942,74,5));
+val it = "Invalid date" : string
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+val get_nth = fn : string list * int -> string
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+val date_to_string = fn : int * int * int -> string
+val sum_to = fn : int list * int -> int
+val it = () : unit
+- sum_to([1,2,3,4,5,6,7],3);
+val it = 10 : int
+- 
+
+Process sml finished
+Standard ML of New Jersey v110.79 [built: Fri Mar 17 02:09:12 2017]
+- use "HW1.sml";
+[opening HW1.sml]
+val is_older = fn : (int * int * int) * (int * int * int) -> bool
+val number_in_month = fn : (int * int * int) list * int -> int
+val number_in_months = fn : (int * int * int) list * int list -> int
+val dates_in_month = fn
+  : (int * int * int) list * int -> (int * int * int) list
+val dates_in_months = fn
+  : (int * int * int) list * int list -> (int * int * int) list
+val get_nth = fn : string list * int -> string
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+val date_to_string = fn : int * int * int -> string
+val sum_to = fn : int list * int -> int
+val it = () : unit
+- sum_to([1,2,3,4,5,6,7],3);
+val it = 6 : int
+- sum_to([1,2,3,4,5,6,7],5);
+val it = 15 : int
+- 
+
+Process sml finished
